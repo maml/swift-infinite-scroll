@@ -40,7 +40,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         var fm: CGRect = UIScreen.mainScreen().bounds
         
         self.mainScrollView = UIScrollView(frame:CGRectMake(0, 0, fm.size.width, fm.size.height))
-        self.mainScrollView!.contentSize = CGSizeMake(self.mainScrollView!.frame.size.width, self.mainScrollView!.frame.size.height * CGFloat(numPages))
+        self.mainScrollView!.contentSize = CGSizeMake(self.mainScrollView!.frame.size.width * CGFloat(numPages), self.mainScrollView!.frame.size.height)
         self.mainScrollView!.backgroundColor = UIColor.greenColor()
         self.mainScrollView!.pagingEnabled = true
         self.mainScrollView!.bounces = false
@@ -50,7 +50,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         self.mainScrollView!.delegate = self
         
         for i in 0...numPages {
-            var tempLabel = UILabel(frame:  CGRectMake(0, self.mainScrollView!.frame.size.height * CGFloat(i), fm.size.width, fm.size.height))
+            var tempLabel = UILabel(frame:  CGRectMake(self.mainScrollView!.frame.size.width * CGFloat(i), 0, fm.size.width, fm.size.height))
             tempLabel.textAlignment = NSTextAlignment.Center
 
             pages.insert(tempLabel, atIndex: i)
@@ -84,7 +84,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView!) {
         // moving forward
-        if(scrollView.contentOffset.y > mainScrollView!.frame.size.height) {
+        if(scrollView.contentOffset.x > mainScrollView!.frame.size.width) {
             // load current doc data on first page
             loadPageWithId(currIndex, onPage: 0)
             
@@ -98,7 +98,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         }
         
         // moving backward
-        if(scrollView.contentOffset.y < mainScrollView!.frame.size.height) {
+        if(scrollView.contentOffset.x < mainScrollView!.frame.size.width) {
             // load current doc data on last page
             loadPageWithId(currIndex, onPage: 2)
             
@@ -112,7 +112,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         }
         
         // reset offset to the middle page
-        self.mainScrollView!.scrollRectToVisible(CGRectMake(0, mainScrollView!.frame.size.height, mainScrollView!.frame.size.width, mainScrollView!.frame.size.height), animated: false)
+        self.mainScrollView!.scrollRectToVisible(CGRectMake(mainScrollView!.frame.size.width, 0, mainScrollView!.frame.size.width, mainScrollView!.frame.size.height), animated: false)
     }
     
 }
